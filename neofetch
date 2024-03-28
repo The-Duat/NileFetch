@@ -976,13 +976,13 @@ get_distro() {
                     on|tiny) distro="Bedrock Linux" ;;
                     *) distro=$(< /bedrock/etc/bedrock-release)
                 esac
-
+            elif [[ -d /var/NileRiver ]]; then
+                distro=$(grep PRETTY_NAME /var/NileRiver/os-release | awk -F= '{print $2}' | tr -d '"')
             elif [[ -f /etc/redstar-release ]]; then
                 case $distro_shorthand in
                     on|tiny) distro="Red Star OS" ;;
                     *) distro="Red Star OS $(awk -F'[^0-9*]' '$0=$2' /etc/redstar-release)"
                 esac
-
             elif [[ -f /etc/armbian-release ]]; then
                 . /etc/armbian-release
                 distro="Armbian $DISTRIBUTION_CODENAME (${VERSION:-})"
@@ -5527,7 +5527,7 @@ get_distro_ascii() {
     # $ascii_distro is the same as $distro.
     case $(trim "$ascii_distro") in
         "AIX"*)
-            set_colors 2 7
+            set_colors 6 7
             read -rd '' ascii_data <<'EOF'
 ${c1}           `:+ssssossossss+-`
         .oys///oyhddddhyo///sy+.
@@ -5551,6 +5551,28 @@ h//NNNNh  ossss` +h  md- .hm/ `sNNNNN:+y
             -/osssossossso/-
 EOF
         ;;
+
+	"Nile"*)
+		set_colors 4 5
+		read -rd '' ascii_data <<'EOF'
+${c1}     ,nnxnnxxxnxnxnnx..
+ .,cdk0KKKKK0000KK0000koc,
+.o00kdl/'         '+::ldk0K0ko:,..
+          ......          &cdk00Okxddool;
+     .:oxO0000Okdoccc.        **"""
+    cOK ${c2}@@@@@@@@N ${c1}YkOOko;..
+  ,x0d ${c2}@@@@@@@@@@k ${c1}oKWNK0kxxxddoolllc'
+ dXNOl ${c2}l@@@@@@@@0 ${c1};hxkkOxlcccllllooddxxx:
+ oxmn0NNokhhkkcjkkhxkkdoc"'
+    .dNMWKOKWW0l
+    'kWMNo 'ckXN0o                 dkkx
+     OWMK     'cxKKOnxo             xOkkx
+     lXM0          oxOK0kln         :okl
+      kWO              ookOOkdolcllodd:
+       kl                  ccllllc
+EOF
+
+	;;
 
 	"Aperio GNU/Linux"*)
 	    set_colors 255
